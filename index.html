@@ -12,11 +12,14 @@
 
   <fieldset>
     <legend>Identificação</legend>
-    <label for="dataNascimento">Data de nascimento:</label>
-    <input type="date" id="dataNascimento" />
+   <label for="dataNascimento">Data de nascimento:</label>
+  <input type="date" id="dataNascimento" name="dataNascimento">
+  <span id="erroNascimento" class="erro"></span>
+
 
     <label for="anoFavorito">Qual o seu ano favorito até então?</label>
-    <input type="number" id="anoFavorito" min="1900" max="2099" placeholder="Ex: 2015" />
+    <input type="number" id="anoFavorito" name="anoFavorito" min="1903" max="2025" />
+<small id="erroAnoFavorito" class="erro"></small>
   </fieldset>
 
   <fieldset>
@@ -73,6 +76,7 @@
     const selectTipoEscola = document.getElementById('tipoEscola');
     const checkboxAdiantado = document.getElementById('adiantado');
     const inputNascimento = document.getElementById('dataNascimento');
+    const erroNascimento = document.getElementById("erroNascimento");
 
     function validarRepeticoes() {
       const repeticoes = parseInt(inputRepeticoes.value) || 0;
@@ -144,14 +148,112 @@
     checkboxAdiantado.addEventListener('change', validarRepeticoes);
     inputNascimento.addEventListener('change', validarRepeticoes);
 
+    inputNascimento.addEventListener("change", () => {
+    const dataDigitada = new Date(inputNascimento.value);
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); // remove hora, só compara data
+
+    if (dataDigitada > hoje) {
+      erroNascimento.innerHTML = `Calma lá! Você ainda nem nasceu! 😳 Tá acessando o site direto do útero?`;
+    } else {
+      erroNascimento.innerHTML = "";
+    }
+  });
+    botaoResultado.addEventListener("click", function (event) {
+    if (!nascimentoValido) {
+      event.preventDefault(); // impede o envio/resultado
+    }
+  });
+
+  function validarNascimento() {
+  const nascimento = document.getElementById('dataNascimento');
+  const erro = document.getElementById('erroNascimento');
+
+  if (!nascimento.value) return true; // deixa passar se o campo estiver vazio
+
+  const dataNasc = new Date(nascimento.value);
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  if (dataNasc > hoje) {
+    erro.textContent = 'Calma lá! Você ainda nem nasceu! 😳 Tá acessando o site direto do útero?';
+    return false;
+  }
+
+  erro.textContent = '';
+  return true;
+}
+function validarAnoFavorito() {
+  const anoInput = document.getElementById('anoFavorito');
+  const ano = parseInt(anoInput.value);
+  const erroAno = document.getElementById('erroAnoFavorito');
+
+  if (isNaN(ano) || ano < 1903 || ano > 2025) {
+    erroAno.textContent = "Escolha um ano entre 1903 e 2025.";
+    return false;
+  }
+
+  erroAno.textContent = "";
+  return true;
+  function validarMateria() {
+  const materiasValidas = [
+    'Português', 'Matemática', 'Ciências', 'História', 'Geografia',
+    'Artes', 'Inglês', 'Biologia', 'Física', 'Ensino Religioso',
+    'Química', 'Educação Física', 'Filosofia', 'Educação Financeira',
+    'Projeto de Vida', 'Tecnologia', 'Sociologia'
+  ];
+
+  const inputMateria = document.getElementById('materia').value.trim();
+
+  // Verifica se o texto digitado está na lista
+  if (!materiasValidas.includes(inputMateria)) {
+    mostrarErroMateria('Digite uma matéria convencional');
+    return false;
+  }
+
+  limparErroMateria();
+  return true;
+}
+
+function mostrarErroMateria(msg) {
+  const erroMateria = document.getElementById('erro-materia');
+  erroMateria.textContent = msg;
+  erroMateria.style.color = 'red';
+  erroMateria.style.display = 'block';
+}
+
+function limparErroMateria() {
+  const erroMateria = document.getElementById('erro-materia');
+  erroMateria.textContent = '';
+  erroMateria.style.display = 'none';
+}
+}
     function calcular() {
-      if (!validarRepeticoes()) {
-        const resultado = document.getElementById('resultado');
-        resultado.classList.remove('show');
-        resultado.innerHTML = 'Corrija os erros no campo de repetições para continuar.';
-        setTimeout(() => resultado.classList.add('show'), 50);
-        return;
-      }
+  if (!validarRepeticoes()) {
+    const resultado = document.getElementById('resultado');
+    resultado.classList.remove('show');
+    resultado.innerHTML = 'Corrija os erros no campo de repetições para continuar.';
+    setTimeout(() => resultado.classList.add('show'), 50);
+    return;
+  }
+
+  if (!validarNascimento()) {
+    const resultado = document.getElementById('resultado');
+    resultado.classList.remove('show');
+    resultado.innerHTML = 'Corrija os erros no campo de nascimento para continuar.';
+    setTimeout(() => resultado.classList.add('show'), 50);
+    return;
+  }
+  if (!validarAnoFavorito()) {
+  const resultado = document.getElementById('resultado');
+  resultado.classList.remove('show');
+  resultado.innerHTML = 'Corrija os erros no campo de ano favorito para continuar.';
+  setTimeout(() => resultado.classList.add('show'), 50);
+  return;
+}
+
+
+      
 
       const nascimentoStr = inputNascimento.value;
       const adiantado = checkboxAdiantado.checked;
@@ -788,6 +890,8 @@ resultado.innerHTML = `
 
       setTimeout(() => resultado.classList.add('show'), 50);
     }
+
+    
   </script>
 </body>
 </html>
