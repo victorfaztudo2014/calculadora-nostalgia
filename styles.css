@@ -1,0 +1,72 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  padding: 40px;
+  background: #f0f0f5;
+  max-width: 700px;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+fieldset {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: white;
+}
+legend {
+  font-weight: 600;
+  font-size: 1.2em;
+  padding: 0 10px;
+}
+label,
+p {
+  display: block;
+  margin: 10px 0 5px;
+  text-align: left;
+}
+input[type='date'],
+input[type='number'],
+select,
+input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+input[type='checkbox'] {
+  transform: scale(1.2);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+button {
+  padding: 12px 30px;
+  font-size: 16px;
+  background: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+button:hover {
+  background: #005fa3;
+}
+.resultado {
+  opacity: 0;
+  transition: opacity 1s ease;
+  margin-top: 30px;
+  font-size: 18px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.resultado.show {
+  opacity: 1;
+}
