@@ -2,81 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Quem é você na vida?</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      padding: 40px;
-      background: #f0f0f5;
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    fieldset {
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      background: white;
-    }
-    legend {
-      font-weight: 600;
-      font-size: 1.2em;
-      padding: 0 10px;
-    }
-    label, p {
-      display: block;
-      margin: 10px 0 5px;
-      text-align: left;
-    }
-    input[type="date"],
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 10px;
-      font-family: 'Poppins', sans-serif;
-    }
-    input[type="checkbox"] {
-      transform: scale(1.2);
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    button {
-      padding: 12px 30px;
-      font-size: 16px;
-      background: #0077cc;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-    button:hover {
-      background: #005fa3;
-    }
-    .resultado {
-      opacity: 0;
-      transition: opacity 1s ease;
-      margin-top: 30px;
-      font-size: 18px;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-    .resultado.show {
-      opacity: 1;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <h1>Quem é você na vida?</h1>
@@ -85,13 +14,31 @@
     <legend>Identificação</legend>
     <label for="dataNascimento">Data de nascimento:</label>
     <input type="date" id="dataNascimento" />
+
+    <label for="anoFavorito">Qual o seu ano favorito até então?</label>
+    <input type="number" id="anoFavorito" min="1900" max="2099" placeholder="Ex: 2015" />
   </fieldset>
 
   <fieldset>
     <legend>História Escolar</legend>
-    <label><input type="checkbox" id="adiantado" /> Fui adiantado(a) na escola (entrei com 6 anos)</label>
+
+    <label for="tipoEscola">Tipo de escola:</label>
+    <select id="tipoEscola">
+      <option value="privada">Privada</option>
+      <option value="publica">Pública</option>
+      <option value="federal">Federal</option>
+    </select>
+
+    <label for="adiantado">
+      <input type="checkbox" id="adiantado" /> Fui adiantado(a) na escola (entrei com 5 anos)
+    </label>
+
     <label for="repeticoes">Quantas vezes você repetiu de ano?</label>
-    <input type="number" id="repeticoes" min="0" value="0" />
+    <input type="number" id="repeticoes" min="0" max="10" value="0" />
+    <div id="msgRepeticoes" style="color: red; font-size: 0.9em; margin-top: 4px; display:none;"></div>
+
+    <label for="materiaFavorita">Qual a sua matéria favorita?</label>
+    <input type="text" id="materiaFavorita" placeholder="Ex: Matemática" />
   </fieldset>
 
   <fieldset>
@@ -118,14 +65,100 @@
       { anos: [2006, 2007, 2008], texto: 'Você se identifica com algo escrito abaixo? Nível Hard de não se identificar. Discovery Kids reinava com Backyardigans, Peixonauta e Pocoyo. TV Cultura que parece existir desde sempre. Baby Alive, Beyblades, Hot Wheels, DVDs e CDs. Chiquititas e Carrossel paravam o Brasil. Professora Helena, Suzana, e o medo da bruxa Carmen! Você teve uma infância memorável.' },
       { anos: [1999, 2000, 2001, 2002, 2003, 2004, 2005], texto: 'Você lembra de quando a tecnologia ainda estava começando a tomar conta de tudo? TV Globinho, Bom Dia & Cia, TV Cultura, Cocoricó, Teletubbies, Dragon Ball Z, Chaves, DVDs e CDs. Brinquedos como Power Rangers, Hello Kitty, Meninas Superpoderosas, Moranguinho e Hot Wheels. Tênis de rodinha. A era de Carrossel, Chiquititas e Frozen. Instagram mal existia. Você guarda consigo memórias pré-evolucionárias da tecnologia!' },
       { anos: [1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998], texto: 'Olá? Adulto quase na casa dos 30 é?? TV Cultura, Castelo Rá-Tim-Bum, Mundo da Lua e Xou da Xuxa. Hot Wheels e Barbies. Super Nintendo, Megadrive, CD e fita cassete. Bom Dia & Cia, Disney Channel, Nickelodeon, brinquedos simples e doces clássicos. Você teve uma infância incrível!' },
-      { anos: [1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989], texto: 'Sente, sente bem aí, por que te recordarei da sua infância. Xou da Xuxa, Carrossel (versão antiga), Chiquititas, Cúmplices de um Resgate. Programa do Silvio Santos, Balão Mágico. Brincadeiras clássicas: pique-pega, polícia e ladrão, bolinha de gude, cinco marias, pião, pular corda. Caverna do Dragão, Scooby-Doo, Chaves, tênis All Star, Super Mario Bros, fita cassete, Rei Leão. A adrenalina era 1000, fizemos coisas que hoje não deixaríamos nossos filhos fazerem nem perto!' }
+      { anos: [1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989], texto: 'Sente, sente bem aí, por que te recordarei da sua infância. Xou da Xuxa, Carrossel (versão antiga), Chiquititas, Cúmplices de um Resgate. Programa do Silvio Santos, Balão Mágico. Brincadeiras clássicas: pique-pega, polícia e ladrão, bolinha de gude, cinco marias,  pião, pular corda. Caverna do Dragão, Scooby-Doo, Chaves, tênis All Star, Super Mario Bros, fita cassete, Rei Leão. A adrenalina era 1000, fizemos coisas que hoje não deixaríamos nossos filhos fazerem nem perto!' }
     ];
 
+    const inputRepeticoes = document.getElementById('repeticoes');
+    const msgRepeticoes = document.getElementById('msgRepeticoes');
+    const selectTipoEscola = document.getElementById('tipoEscola');
+    const checkboxAdiantado = document.getElementById('adiantado');
+    const inputNascimento = document.getElementById('dataNascimento');
+
+    function validarRepeticoes() {
+      const repeticoes = parseInt(inputRepeticoes.value) || 0;
+      const tipoEscola = selectTipoEscola.value;
+      const adiantado = checkboxAdiantado.checked;
+      const nascimentoStr = inputNascimento.value;
+
+      if (!nascimentoStr) {
+        msgRepeticoes.style.display = 'none';
+        return false;
+      }
+
+      const nascimento = new Date(nascimentoStr);
+      const anoAtual = new Date().getFullYear();
+      const anoNascimento = nascimento.getFullYear();
+
+      const idadeEntrada = adiantado ? 6 : 7;
+      const anoEntradaEscola = anoNascimento + idadeEntrada;
+
+      const tempoNaEscola = anoAtual - anoEntradaEscola;
+
+      if (tempoNaEscola < 0) {
+        if (repeticoes > 0) {
+          msgRepeticoes.style.display = 'block';
+          msgRepeticoes.textContent = 'Você ainda não entrou na escola, não pode ter repetido anos.';
+          return false;
+        } else {
+          msgRepeticoes.style.display = 'none';
+          return true;
+        }
+      }
+
+      if (repeticoes > tempoNaEscola) {
+        msgRepeticoes.style.display = 'block';
+        msgRepeticoes.textContent = `Você não pode ter repetido mais anos (${repeticoes}) do que o tempo na escola (${tempoNaEscola}).`;
+        return false;
+      }
+
+      const serieAtual = tempoNaEscola - repeticoes + 1;
+
+      switch (tipoEscola) {
+        case 'publica':
+          if (serieAtual < 6 && repeticoes > 0) {
+            msgRepeticoes.style.display = 'block';
+            msgRepeticoes.textContent = 'Na escola pública, antes do 6º ano, você não pode ter repetido de ano';
+            return false;
+          }
+          break;
+
+        case 'federal':
+          if (serieAtual < 10) {
+            msgRepeticoes.style.display = 'block';
+            msgRepeticoes.textContent = 'Na escola federal só há ensino médio (séries 1, 2 e 3 do ensino médio). Você repetiu demais para estar no ensino médio.';
+            return false;
+          }
+          break;
+
+        case 'privada':
+          // Pode repetir qualquer série, já validado acima
+          break;
+      }
+
+      msgRepeticoes.style.display = 'none';
+      return true;
+    }
+
+    inputRepeticoes.addEventListener('input', validarRepeticoes);
+    selectTipoEscola.addEventListener('change', validarRepeticoes);
+    checkboxAdiantado.addEventListener('change', validarRepeticoes);
+    inputNascimento.addEventListener('change', validarRepeticoes);
+
     function calcular() {
-      const nascimentoStr = document.getElementById('dataNascimento').value;
-      const adiantado = document.getElementById('adiantado').checked;
-      const repeticoes = parseInt(document.getElementById('repeticoes').value);
+      if (!validarRepeticoes()) {
+        const resultado = document.getElementById('resultado');
+        resultado.classList.remove('show');
+        resultado.innerHTML = 'Corrija os erros no campo de repetições para continuar.';
+        setTimeout(() => resultado.classList.add('show'), 50);
+        return;
+      }
+
+      const nascimentoStr = inputNascimento.value;
+      const adiantado = checkboxAdiantado.checked;
+      const repeticoes = parseInt(inputRepeticoes.value) || 0;
       const memoriaValor = parseInt(document.getElementById('memoria').value);
+      const anoFavorito = document.getElementById('anoFavorito').value;
+      const materiaFavorita = document.getElementById('materiaFavorita').value.trim();
       const resultado = document.getElementById('resultado');
 
       if (!nascimentoStr) {
@@ -155,14 +188,15 @@
       }
 
       let idade = anoAtual - ano;
-      const jaFezAniversario = (
+      const jaFezAniversario =
         hoje.getMonth() > nascimento.getMonth() ||
-        (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() >= nascimento.getDate())
-      );
+        (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() >= nascimento.getDate());
       if (!jaFezAniversario) idade--;
 
       let geracao = 'Desconhecida';
-      if (ano >= 1946 && ano <= 1964) geracao = 'Geração W';
+      if (ano >= 1900 && ano <= 1924) geracao = 'Geração U';
+      else if (ano >= 1925 && ano <= 1945) geracao = 'Geração V';
+      else if (ano >= 1946 && ano <= 1964) geracao = 'Geração W';
       else if (ano >= 1965 && ano <= 1980) geracao = 'Geração X';
       else if (ano >= 1981 && ano <= 1997) geracao = 'Geração Y';
       else if (ano >= 1998 && ano <= 2009) geracao = 'Geração Z';
@@ -172,7 +206,559 @@
       const anoConsciencia = ano + memoriaValor;
       const idadeEntrada = adiantado ? 6 : 7;
       const anoEscola = ano + idadeEntrada;
-      const tempoNaEscola = anoAtual - anoEscola - repeticoes;
+      const tempoDesdeEntrada = anoAtual - anoEscola;
+      const tempoNaEscola = tempoDesdeEntrada - repeticoes;
+
+      let textoAnoFavorito = '';
+
+if (anoFavorito === '2014') {
+  const idadeEm2014 = 2014 - ano;
+
+  if (idadeEm2014 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2014):</strong><br>
+      Você tinha apenas ${idadeEm2014} ano${idadeEm2014 === 1 ? '' : 's'} em 2014. Pode ser que tenha alguma lembrança afetiva ou ouviu muito sobre esse ano, mas é bem improvável que tenha vivido experiências marcantes o suficiente pra considerá-lo o melhor ano da sua vida.<br>
+      A infância é um tempo mágico, mas a memória verdadeira só costuma se firmar um pouco depois!</p>
+    `;
+  } else if (idadeEm2014 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2014):</strong><br>
+      Em 2014 você era bem pequeno, mas isso só mostra como os primeiros anos da infância são marcantes!<br>
+      Talvez o que ficou na memória tenha sido assistir aos mesmos episódios de "Peppa Pig", "Galinha Pintadinha" e "Patrulha Canina" repetidas vezes, ou escutar aquelas músicas de ninar no YouTube. Provavelmente tinha brinquedos da moda como os primeiros bonecos da <strong>LOL Surprise</strong> ou até <strong>Hot Wheels</strong>.<br>
+      Pode não lembrar de tudo, mas sua infância tinha o que importava: inocência, repetição confortável e pura alegria.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2014):</strong><br>
+      Você viveu 2014 em sua plenitude — e que ano!<br>
+      <strong>🏆 Copa do Mundo no Brasil:</strong> inesquecível (por bem ou por mal). A expectativa foi alta, a zoeira também. Quem esquece o 7x1? Os memes dominaram a internet!<br>
+      <strong>🌍 Mundo em movimento:</strong> Enquanto o Brasil parava pra ver a Copa, o mundo enfrentava conflitos na Ucrânia e no Oriente Médio, e o surto de ebola preocupava a todos.<br>
+      <strong>📺 TV e desenhos:</strong> "Chiquititas" ainda estava no ar, e "Carrossel" ainda era lembrada. Desenhos como "Adventure Time", "Hora do Show", "Steven Universo" e "Bob Esponja" estavam bombando.<br>
+      <strong>🎮 Jogos:</strong> "Minecraft" era uma febre entre as crianças e adolescentes. "FIFA 14", "GTA V", e "The Sims 4" também estavam em alta.<br>
+      <strong>📱 Redes sociais:</strong> Facebook ainda era rei. Instagram crescia, mas era mais de fotos bonitas. O WhatsApp se consolidava como o app de mensagem principal.<br>
+      <strong>🎥 YouTube:</strong> Lucas Neto começava a crescer. Felipe Neto, Christian Figueiredo, RezendeEvil, AuthenticGames e T3ddy faziam sucesso com vídeos engraçados, desafios e Minecraft.<br>
+      <strong>🎵 Músicas:</strong> O ano foi dominado por "Happy" do Pharrell Williams, "Dark Horse" da Katy Perry, "Anitta" estourando com "Show das Poderosas", e hits de funk e sertanejo.<br>
+      <strong>🧸 Brinquedos:</strong> Beyblade ainda era lembrada. Bonecos da "Frozen" explodiram nas lojas após o sucesso do filme.<br>
+      <strong>🔥 Memes e modas:</strong> "7x1", "É Tetra!", memes da Dilma, vídeos de reação e desafios bobos como o Ice Bucket Challenge dominaram as redes. Tinha Vine, dancinhas bizarras e muitos bordões nascendo.<br>
+      <strong>📺 Programas de TV:</strong> "The Voice Brasil", "Programa da Sabrina", "Encontro com Fátima", e o último respiro da "TV Globinho".<br>
+      Foi um ano caótico, divertido e nostálgico — e dá pra entender totalmente por que você o ama tanto!</p>
+    `;
+  }
+}
+
+if (anoFavorito === '2015') {
+  const idadeEm2015 = 2015 - ano;
+
+  if (idadeEm2015 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2015):</strong><br>
+      Você tinha apenas ${idadeEm2015} ano${idadeEm2015 === 1 ? '' : 's'} em 2015. É difícil que esse ano tenha sido marcante para você, pois ainda estava formando suas primeiras memórias e sentimentos.<br>
+      Pode ter gostado de algum som ou cor, mas provavelmente 2015 não foi um ano de experiências conscientes para você.</p>
+    `;
+  } else if (idadeEm2015 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2015):</strong><br>
+      Em 2015 você era bem pequeno, e provavelmente sua infância foi recheada de momentos doces e repetitivos que marcam essa fase.<br>
+      Desenhos como <strong>Peppa Pig</strong>, <strong>Patrulha Canina</strong> e <strong>Show da Luna</strong> faziam sucesso, e talvez você assistisse aos mesmos episódios várias vezes.<br>
+      Os brinquedos <strong>LOL Surprise</strong> estavam começando a explodir no mercado, junto com os clássicos <strong>Hot Wheels</strong>.<br>
+      No mundo da música infantil, a trilha sonora ainda era dominada por canções que você ouvia para dormir ou brincar.<br>
+      Essa fase é sobre a inocência, descobertas lentas e muita diversão simples.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2015):</strong><br>
+      Você viveu 2015 com mais consciência e provavelmente se lembra bem desse ano tão marcante.<br>
+      <strong>🎉 Brinquedos e moda:</strong> LOL Surprise continuava crescendo como febre, e Hot Wheels e bonecos de super-heróis dominavam as prateleiras.<br>
+      <strong>📺 Desenhos e programas:</strong> Além dos clássicos como Peppa Pig e Patrulha Canina, <em>Hora de Aventura</em> e <em>Steven Universo</em> continuavam em alta.<br>
+      <strong>🎮 Jogos:</strong> Minecraft ainda era um dos favoritos, junto com jogos de celular que começavam a dominar.<br>
+      <strong>📱 Redes sociais e YouTube:</strong> YouTubers como Felipe Neto, AuthenticGames e Christian Figueiredo estavam entre os mais assistidos.<br>
+      <strong>🎵 Música:</strong> Hits como “Cheerleader” de OMI, “Lean On” de Major Lazer, e “Hello” de Adele tocavam bastante.<br>
+      <strong>🌎 Política e eventos:</strong> O Brasil vivia momentos conturbados com manifestações intensas e debates eleitorais marcantes.<br>
+      <strong>🔥 Memes e trends:</strong> Desafios bobos, vines engraçados e muitos bordões da internet estavam no auge.<br>
+      Foi um ano cheio de experiências, aprendizados e diversão — e dá para entender porque ele pode ter ficado guardado como especial para você!</p>
+    `;
+  }
+}
+if (anoFavorito === '2016') {
+  const idadeEm2016 = 2016 - ano;
+
+  if (idadeEm2016 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2016):</strong><br>
+      Você tinha apenas ${idadeEm2016} ano${idadeEm2016 === 1 ? '' : 's'} em 2016. Apesar de poder ter alguma lembrança afetiva, é pouco provável que esse ano tenha sido decisivo para formar suas memórias mais fortes.<br>
+      A infância é feita de pequenos momentos que vão se firmando com o tempo — então não se preocupe se não lembrar muito bem!</p>
+    `;
+  } else if (idadeEm2016 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2016):</strong><br>
+      Em 2016 você ainda era bem pequeno, numa fase mágica em que a infância se desenrola entre brincadeiras e descobertas.<br>
+      Provavelmente assistia muito a <strong>Peppa Pig</strong>, <strong>Patrulha Canina</strong> e <strong>Show da Luna</strong>, repetindo episódios e se encantando com os personagens.<br>
+      Os brinquedos que faziam sucesso incluíam os bonecos <strong>LOL Surprise</strong>, <strong>Hot Wheels</strong> e clássicos que nunca saem de moda.<br>
+      As músicas infantis do YouTube eram uma trilha constante nas suas manhãs e noites.<br>
+      Essa fase é pura inocência, repetição confortável e alegria simples, aquele tempo onde tudo era uma grande aventura.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2016):</strong><br>
+      Ah, 2016! Que ano intenso e cheio de memórias marcantes — e que alegria ele ter sido seu favorito!<br>
+      <strong>🌎 Eventos mundiais e nacionais:</strong> A Olimpíada do Rio de Janeiro foi o grande destaque, enchendo o Brasil de emoção e orgulho, com momentos inesquecíveis e a famosa tocha olímpica circulando o país.<br>
+      <strong>⚽ Esportes:</strong> O futebol brasileiro passou por desafios, mas a paixão nacional continuava firme, enquanto o mundo se encantava com estrelas como Messi e Cristiano Ronaldo.<br>
+      <strong>🎬 Filmes e séries:</strong> 2016 viu o lançamento de sucessos como <em>Capitão América: Guerra Civil</em>, <em>Rogue One: Uma História Star Wars</em>, <em>Deadpool</em>, e séries que conquistavam público, como <em>Stranger Things</em> que estreou no final do ano, trazendo nostalgia dos anos 80 para os jovens.<br>
+      <strong>🎮 Jogos:</strong> Minecraft continuava seu reinado, mas 2016 foi o ano que <em>Pokémon Go</em> revolucionou o mundo, fazendo com que crianças e adultos saíssem às ruas em busca dos monstrinhos — uma verdadeira febre global.<br>
+      <strong>📱 Redes sociais e YouTube:</strong> YouTubers como Felipe Neto, Whindersson Nunes, e AuthenticGames estavam no auge, produzindo conteúdo que ia de humor a gameplay.<br>
+      O Instagram e Snapchat bombavam, com filtros divertidos e stories tornando-se parte do dia a dia.<br>
+      <strong>🎵 Música:</strong> Hits como “Hello” de Adele, “Work” de Rihanna, “Closer” do The Chainsmokers, e “Cheerleader” de OMI dominaram as paradas.<br>
+      <strong>🔥 Memes e trends:</strong> O desafio do balde de gelo (Ice Bucket Challenge) ainda repercutia, e memes como “Damn Daniel” e “Pepe the Frog” circulavam intensamente.<br>
+      <strong>🧸 Brinquedos e moda:</strong> As bonecas LOL Surprise continuaram a fazer sucesso, junto com brinquedos tradicionais como Hot Wheels e Lego.<br>
+      <strong>📺 Programas de TV:</strong> Além dos clássicos, o <em>The Voice Brasil</em> e <em>Encontro com Fátima Bernardes</em> mantinham audiência forte.<br>
+      2016 foi um ano de grandes mudanças, muita inovação e muita diversão, e é fácil entender por que ele ocupa um lugar especial no seu coração!</p>
+    `;
+  }
+}
+if (anoFavorito === '2017') {
+  const idadeEm2017 = 2017 - ano;
+
+  if (idadeEm2017 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2017):</strong><br>
+      Você tinha apenas ${idadeEm2017} ano${idadeEm2017 === 1 ? '' : 's'} em 2017. Embora possa ter algum afeto por esse ano, é improvável que tenha formado memórias profundas.<br>
+      A infância vai formando suas lembranças com o tempo, então fique tranquilo se esse ano parecer um pouco nebuloso para você.</p>
+    `;
+  } else if (idadeEm2017 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2017):</strong><br>
+      Em 2017, você estava numa fase encantadora da infância, cheia de descobertas e brincadeiras.<br>
+      Provavelmente adorava ver <strong>Peppa Pig</strong>, <strong>Patrulha Canina</strong>, e também séries novas como <strong>Miraculous Ladybug</strong> que começaram a bombar.<br>
+      Os brinquedos da moda continuavam sendo os <strong>LOL Surprise</strong>, além dos <strong>Bonecos Funko Pop</strong> que começavam a virar febre.<br>
+      As músicas infantis do YouTube ainda tocavam muito, junto com sucessos infantis de artistas brasileiros.<br>
+      Essa época é cheia de inocência, alegria e aquela sensação de que o mundo é um grande parque de diversões.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2017):</strong><br>
+      2017 foi um ano carregado de eventos marcantes, tendências virais e mudanças culturais — perfeito para ser um ano favorito!<br>
+      <strong>🌍 Eventos mundiais:</strong> Aconteceu a posse de Donald Trump como presidente dos EUA, que influenciou muito o cenário político global.<br>
+      No Brasil, o país passava por intensas discussões políticas com a Operação Lava Jato em destaque e a crise econômica ainda presente.<br>
+      <strong>⚽ Esportes:</strong> O futebol continuava a emocionar multidões, com a preparação para a Copa do Mundo de 2018 já começando a esquentar.<br>
+      <strong>🎬 Filmes e séries:</strong> 2017 marcou o lançamento de grandes produções como <em>Mulher-Maravilha</em>, <em>It – A Coisa</em>, <em>Thor: Ragnarok</em>, e <em>Star Wars: Os Últimos Jedi</em> (anunciado para 2017, lançado no fim de 2017).<br>
+      Séries como <em>Stranger Things</em> continuaram conquistando fãs pelo mundo.<br>
+      <strong>🎮 Jogos:</strong> Entre os games, <em>Fortnite</em> começou sua explosão, conquistando jogadores de todas as idades com o modo Battle Royale.<br>
+      <em>PlayerUnknown’s Battlegrounds (PUBG)</em> também cresceu muito, consolidando o gênero.<br>
+      <strong>📱 Redes sociais e YouTube:</strong> YouTubers como Felipe Neto, Whindersson Nunes e AuthenticGames mantiveram sua popularidade.<br>
+      O Instagram cresceu ainda mais, especialmente com o lançamento do recurso Stories, que virou febre instantaneamente.<br>
+      O TikTok ainda era incipiente, mas começava a se formar no cenário internacional.<br>
+      <strong>🎵 Música:</strong> 2017 foi um ano de hits marcantes como “Despacito” de Luis Fonsi & Daddy Yankee, “Shape of You” de Ed Sheeran, “Havana” da Camila Cabello e “Bodak Yellow” da Cardi B.<br>
+      No Brasil, o funk continuava firme e forte, com artistas como Anitta ganhando fama internacional.<br>
+      <strong>🔥 Memes e trends:</strong> Memes como “Distracted Boyfriend” viralizaram nas redes.<br>
+      O desafio do balde de gelo já tinha passado, mas novos desafios como o “Mannequin Challenge” conquistaram o público.<br>
+      Os gifs, stickers e filtros animados viraram parte do cotidiano digital.<br>
+      <strong>🧸 Brinquedos e moda:</strong> Além das bonecas LOL Surprise, os brinquedos de tecnologia como drones começaram a se popularizar.<br>
+      Bonecos Funko Pop estavam na moda, colecionados por muitas crianças e adolescentes.<br>
+      <strong>📺 Programas de TV:</strong> Clássicos continuavam firmes, e programas como <em>The Voice Brasil</em> e reality shows seguiam conquistando público.<br>
+      A nostalgia também bateu forte, com o retorno de desenhos clássicos em novas versões e remakes.<br>
+      2017 foi um ano que combinou inovação, cultura pop e uma boa dose de entretenimento — um cenário perfeito para marcar uma geração!</p>
+    `;
+  }
+}
+
+if (anoFavorito === '2018') {
+  const idadeEm2018 = 2018 - ano;
+
+  if (idadeEm2018 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2018):</strong><br>
+      Você tinha apenas ${idadeEm2018} ano${idadeEm2018 === 1 ? '' : 's'} em 2018. Pode ser que tenha uma memória muito vaga ou um carinho afetivo pelas músicas e vídeos da época, mas dificilmente teve vivências marcantes a ponto de considerar este o seu melhor ano.<br>
+      A essa altura, a memória ainda era muito recente e fragmentada — é como lembrar de um cheiro ou música, mas não exatamente do momento.</p>
+    `;
+  } else if (idadeEm2018 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2018):</strong><br>
+      Em 2018, sua vida era feita de desenhos repetidos, brinquedos que brilhavam na propaganda e vídeos no YouTube que seus pais deixavam você ver mil vezes.<br><br>
+      <strong>🧸 Brinquedos e produtos:</strong> LOL Surprise estava no auge. Os "Beyblades" ainda giravam na casa de muita gente, e os brinquedos do filme "Frozen" dominavam prateleiras.<br>
+      <strong>📺 Desenhos:</strong> "Patrulha Canina", "PJ Masks", "Peppa Pig", "Galinha Pintadinha", e "Show da Luna" eram febres entre as crianças. "Masha e o Urso" e "Backyardigans" ainda apareciam bastante.<br>
+      <strong>📱 YouTube Kids:</strong> Lucas Neto explodia entre as crianças com vídeos coloridos e teatrais. Canções como "Aventuras com os Irmãos Neto" grudavam na cabeça.<br><br>
+      Foi um ano que pode ter marcado seu coração infantil pela repetição confortável e pelas musiquinhas que você ouvia dançando com um copo de toddynho na mão.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2018):</strong><br>
+      Um ano de transição: não foi um ano tão caótico quanto os seguintes, e pra muitos foi leve, marcante e nostálgico.<br><br>
+      <strong>📱 Redes sociais e memes:</strong> O Instagram virou o centro das atenções, com stories bombando. "Que tiro foi esse?" virou hit e meme. "Caneta Azul" apareceu no fim do ano e viralizou rápido. O TikTok começava a chamar atenção, mas ainda era tímido. Facebook ainda tinha alguma força.<br><br>
+      <strong>🎮 Jogos:</strong> "Fortnite" explodiu em popularidade. "Free Fire" começou a ganhar tração no Brasil. "Minecraft" ainda era febre entre os mais jovens. "God of War" foi eleito Jogo do Ano e impactou os gamers mais velhos.<br><br>
+      <strong>📺 TV e desenhos:</strong> "Hora de Aventura" se despediu oficialmente. "Steven Universo" seguia em alta. "Miraculous Ladybug" ganhava espaço no público infantojuvenil. "Bob Esponja", eterno, continuava firme.<br><br>
+      <strong>🎥 YouTube:</strong> RezendeEvil, AuthenticGames, Lucas Neto e Felipe Neto estavam no topo. T3ddy e Júlio Cocielo dominavam o entretenimento adolescente. Os youtubers infantis cresciam absurdamente, com conteúdos teatrais e histórias.<br><br>
+      <strong>🎵 Música:</strong> "Vai Malandra" da Anitta, "Que tiro foi esse?" da Jojo Todynho e músicas da Ariana Grande, Drake e BTS dominaram playlists. "Bohemian Rhapsody", filme da banda Queen, reacendeu o amor por clássicos.<br><br>
+      <strong>🔥 Outros destaques:</strong><br>
+      - <strong>Política:</strong> Foi o ano da eleição de Jair Bolsonaro, marcada por debates tensos e forte presença nas redes.<br>
+      - <strong>Cultura:</strong> O K-pop ganhava espaço de vez no Brasil. BTS virou febre adolescente. Também foi o ano da greve dos caminhoneiros, que parou o país e afetou todos os setores.<br>
+      - <strong>TV aberta:</strong> "As Aventuras de Poliana" fez sucesso no SBT. A "TV Globinho" já tinha sumido, mas muita gente ainda vivia a nostalgia dela.<br><br>
+      Seja como criança, adolescente ou jovem adulto, 2018 foi um ano que uniu muita coisa boa, leve e nostálgica — sem a tensão da pandemia, e com memórias digitais e culturais fortes.</p>
+    `;
+  }
+}
+
+if (anoFavorito === '2019') {
+  const idadeEm2019 = 2019 - ano;
+
+  if (idadeEm2019 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2019):</strong><br>
+      Você tinha apenas ${idadeEm2019} ano${idadeEm2019 === 1 ? '' : 's'} em 2019. Talvez lembre de músicas ou vídeos infantis, mas é improvável que tenha vivido experiências marcantes a ponto de tornar este o seu ano favorito.</p>
+    `;
+  } else if (idadeEm2019 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2019):</strong><br>
+      Um ano recheado de músicas infantis no YouTube, vídeos repetidos do Lucas Neto, brinquedos coloridos e desenhos da "Galinha Pintadinha" até "Patrulha Canina".<br><br>
+      Você provavelmente estava na fase de pré-escola e sua vida girava em torno de comer bisnaguinha, ver os mesmos episódios de "Masha e o Urso" e dormir ouvindo músicas do Mundo Bita.<br><br>
+      "Baby Shark" era uma febre que invadiu escolas e casas, e vídeos com slime, brinquedos e historinhas teatrais dominavam seu mundo.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2019):</strong><br>
+      Último ano "normal" antes da pandemia — e talvez por isso tenha ficado marcado no seu coração. Um ano vibrante, nostálgico e cheio de cultura pop.<br><br>
+      <strong>🎮 Jogos:</strong> "Free Fire" dominou totalmente entre os adolescentes e crianças. "Fortnite" ainda estava forte. "Minecraft" ressurgiu como fenômeno graças a youtubers e séries. "Among Us" começava a ser descoberto no final do ano.<br><br>
+      <strong>📺 Séries e desenhos:</strong> "Stranger Things 3" foi um estouro. "The Umbrella Academy" estreou. Entre os desenhos: "Steven Universo", "Miraculous Ladybug", "Irmão do Jorel", "Hora do Show" e "Bob Esponja" seguiam em alta. Para os pequenos: "Mundo Bita", "Turma da Mônica" e "Patrulha Canina".<br><br>
+      <strong>🎥 Cinema:</strong> "Vingadores: Ultimato" emocionou o mundo com o fim da saga. "Frozen 2" também estreou e encantou os pequenos. "O Rei Leão" em versão live-action dividiu opiniões mas causou buzz.<br><br>
+      <strong>📱 Redes e memes:</strong> TikTok explodiu de vez em 2019. As dancinhas, dublagens e vídeos rápidos começaram a substituir as trends do YouTube. Memes como "Surpresa, Pikachu!", "Você não sabe nem eu!" e o "Gato da mesa" viralizaram.<br><br>
+      <strong>🎵 Música:</strong> "Old Town Road" do Lil Nas X, "Dance Monkey" da Tones and I, "Senorita" de Shawn Mendes e Camila Cabello. No Brasil: Anitta, Kevinho, MC Lan, Luan Santana e Marília Mendonça estavam em alta.<br><br>
+      <strong>🎬 YouTube:</strong> Lucas Neto reinava entre os pequenos. RezendeEvil, TazerCraft, AuthenticGames e os youtubers infantis dominavam as tardes de crianças. Para os maiores: Felipe Neto crescia absurdamente, e o YouTube se tornava o novo canal principal.<br><br>
+      2019 foi um ano de liberdade, brincadeira, redes explodindo e zero pandemia — talvez por isso ele tenha ficado como o "último grande ano normal" no coração de muitos.</p>
+    `;
+  }
+}
+if (anoFavorito === '2020') {
+  const idadeEm2020 = 2020 - ano;
+
+  if (idadeEm2020 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2020):</strong><br>
+      Você tinha apenas ${idadeEm2020} ano${idadeEm2020 === 1 ? '' : 's'} em 2020. Talvez tenha memórias visuais de vídeos ou brinquedos dessa época, mas é muito improvável que tenha vivido momentos marcantes o suficiente para considerar este seu melhor ano.</p>
+    `;
+  } else if (idadeEm2020 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2020):</strong><br>
+      Você provavelmente passou 2020 dentro de casa com sua família, vendo os mesmos episódios de “Patrulha Canina”, “Peppa Pig”, “Mundo Bita” e “Galinha Pintadinha”, enquanto o mundo lá fora vivia um caos.<br><br>
+      <strong>📺 Desenhos e brinquedos:</strong> Lucas Neto era o rei dos vídeos infantis no YouTube, com histórias coloridas, dancinhas e aventuras. Os brinquedos da LOL Surprise continuavam em alta, junto com os bonecos do Baby Yoda que viralizou após “The Mandalorian”.<br>
+      A infância em 2020 era feita de repetição, conforto, tablets e muito amor em casa. Talvez por isso, mesmo em meio à pandemia, o ano tenha deixado uma memória emocional marcante pra você.</p>
+    `;
+  } else if (idadeEm2020 >= 13) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2020):</strong><br>
+      Você já tinha ${idadeEm2020} anos em 2020 — ou seja, viveu quase toda a década de 2010, com suas séries, memes, músicas e cultura.<br>
+      Ainda assim, escolheu 2020 como seu ano favorito — e isso é muito significativo.<br><br>
+      Talvez 2020 tenha sido um tempo de reflexão, autoconhecimento, ou até de pausa bem-vinda em um mundo que sempre correu rápido demais.<br>
+      A internet se tornou o grande palco da humanidade. Muita gente se reinventou. Vimos talentos surgirem, comunidades se apoiarem e uma nova forma de viver, estudar e até amar. Apesar de tudo, você encontrou beleza num ano caótico — isso é admirável.</p>
+
+      <p><strong>🌍 O ano em si foi um marco na história:</strong><br>
+      - A <strong>pandemia da COVID-19</strong> mudou tudo. Escolas fecharam, o ensino virou remoto, as ruas ficaram vazias e o álcool em gel virou item de bolso.<br>
+      - As lives dominaram a internet. De Sandy & Junior a Marília Mendonça, os shows vieram pra dentro de casa.<br>
+      - Máscaras viraram parte do dia a dia e o termo “quarentena” passou a fazer parte da linguagem.<br><br>
+
+      <strong>📱 Redes e trends:</strong><br>
+      - O <strong>TikTok explodiu</strong> com dancinhas como "Oh na na na", "Say So", “Renegade” e músicas da Doja Cat.<br>
+      - Desafios de "estilo VSCO", glow ups, e trends com filtros engraçados viralizaram.<br>
+      - Lives no Instagram se tornaram rotinas noturnas.<br><br>
+
+      <strong>🎮 Jogos:</strong> "Among Us" virou febre mundial, mesmo tendo sido lançado anos antes. Era impossível passar um dia sem ver alguém falando “sus”.<br>
+      "Free Fire" e "Fortnite" continuaram em alta. "Animal Crossing" foi o conforto para muitos no isolamento.<br><br>
+
+      <strong>🎥 YouTube e streamings:</strong><br>
+      - Lucas Neto e youtubers infantis cresceram ainda mais entre as crianças.<br>
+      - Para os adolescentes, canais de humor e desafios no quarto viraram a norma.<br>
+      - No streaming, "The Mandalorian" e “A Barraca do Beijo 2” deram o que falar. “Emily em Paris” dividiu opiniões, mas ganhou público.<br><br>
+
+      <strong>🎵 Música:</strong> "WAP" de Cardi B, "Blinding Lights" do The Weeknd, músicas da Doja Cat, BTS, Anitta, e as virais do TikTok dominaram o ano.<br><br>
+
+      <strong>🧸 Cultura pop e nostalgia:</strong><br>
+      - A nostalgia cresceu: muita gente voltou a ver "iCarly", "Drake & Josh" e outros clássicos.<br>
+      - Teve muito tempo em casa para rever séries, assistir filmes antigos e criar novos hobbies.<br><br>
+
+      2020 foi um ano desafiador, mas pra você ele foi especial. Talvez por causa das conexões, da pausa, da criatividade... ou simplesmente porque, mesmo no caos, você encontrou motivos para sorrir.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2020):</strong><br>
+      2020 foi o ano da reclusão — o início da pandemia, o ensino remoto, o isolamento, o álcool em gel, as máscaras e a saudade dos amigos.<br><br>
+
+      Mas também foi o ano onde as <strong>redes sociais</strong> e o mundo digital explodiram como nunca!<br><br>
+      <strong>📱 TikTok:</strong> Foi o grande vencedor do ano. Dancinhas como “Say So”, “WAP Challenge” e “Oh na na na” viraram febre entre adolescentes.<br>
+      <strong>🎮 Jogos:</strong> "Among Us" explodiu entre crianças, adolescentes e adultos. "Free Fire" reinava. "Animal Crossing" virou o paraíso da calmaria.<br>
+      <strong>📺 Entretenimento:</strong> “Emily em Paris”, “Cobra Kai” e “A Barraca do Beijo 2” dominaram o streaming. No YouTube, vídeos no estilo “room tour”, “study with me” e “meu dia na quarentena” bombaram.<br>
+      <strong>🎵 Música:</strong> BTS com “Dynamite”, The Weeknd com “Blinding Lights”, Doja Cat com “Say So”, e Anitta, Luísa Sonza, e Pabllo Vittar estavam em todas as playlists.<br>
+      <strong>🌍 Mundo real:</strong> A pandemia, as notícias sobre vacinas, fake news, e o cancelamento de eventos como a Copa América e as Olimpíadas marcaram o ano.<br><br>
+      Mesmo em meio à pandemia, 2020 teve seus encantos digitais — e, pra muitos, foi o ano onde o tempo desacelerou e novas formas de viver surgiram.</p>
+    `;
+  }
+}
+if (anoFavorito === '2021') {
+  const idadeEm2021 = 2021 - ano;
+
+  if (idadeEm2021 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2021):</strong><br>
+      Você tinha apenas ${idadeEm2021} ano${idadeEm2021 === 1 ? '' : 's'} em 2021. Provavelmente escutava músicas de ninar, via vídeos repetidos no YouTube Kids ou brincava com brinquedos que brilhavam e cantavam. Mas é pouco provável que tenha vivido experiências suficientes para marcar esse ano como o seu favorito de verdade.</p>
+    `;
+  } else if (idadeEm2021 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2021):</strong><br>
+      Sua infância estava a mil — mesmo em tempos pandêmicos. Você provavelmente assistia "Mundo Bita", "Peppa Pig", "Patrulha Canina" e Lucas Neto todos os dias, com episódios repetidos e músicas chicletes.<br><br>
+      <strong>🎁 Brinquedos:</strong> LOL Surprise ainda fazia sucesso, bonecos do Baby Yoda continuavam populares, junto com carrinhos Hot Wheels e brinquedos interativos que falam e dançam.<br>
+      <strong>🎥 YouTube:</strong> Canais como Galinha Pintadinha, Turma da Mônica Toy e Luccas Neto dominavam as telas de tablets e Smart TVs.<br>
+      <strong>🧃 A rotina:</strong> A pandemia ainda deixava muita gente em casa — o conforto era repetir os desenhos, brincar no tapete da sala e usar tablet com capa de borracha!</p>
+    `;
+  } else if (idadeEm2021 >= 14) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2021):</strong><br>
+      Você já tinha ${idadeEm2021} anos em 2021 — o que significa que você vivenciou quase toda a década de 2010 e ainda assim preferiu 2021. Isso revela que você viu algo especial nesse ano.<br><br>
+      Talvez tenha sido um ano de recomeço após a parte mais intensa da pandemia, ou um ano de autoconhecimento, evolução pessoal, amizades fortes online ou até uma fase mais introspectiva e criativa.<br><br>
+      <strong>🌍 Contexto global:</strong> A pandemia ainda estava presente, mas com o avanço das vacinas, as escolas e ruas voltavam à vida aos poucos.<br><br>
+      <strong>📱 Redes sociais:</strong><br>
+      - O TikTok já era o rei absoluto. Trends como "Buss It Challenge", "I understood the assignment", “Meu nome é TÁÁÁSSIO” (do Brasil) e edições criativas dominaram.<br>
+      - Os vídeos estéticos de rotina (study vlogs, room tours, morning routine) ganharam mais espaço.<br><br>
+
+      <strong>🎮 Jogos:</strong> "Friday Night Funkin'" bombou entre os adolescentes. "Free Fire" e "Fortnite" continuavam firmes, enquanto “Roblox” virou febre entre os menores.<br>
+      - “Genshin Impact” crescia, e Minecraft continuava popular com mods e mapas no YouTube.<br><br>
+
+      <strong>🎥 Streaming:</strong> “Round 6” virou fenômeno mundial. “Loki” da Marvel, “Wandavision” e “Raya e o Último Dragão” marcaram o ano.<br>
+      - Séries coreanas, animações da Disney e conteúdos da Marvel dominaram.<br><br>
+
+      <strong>🎵 Músicas:</strong> Olivia Rodrigo explodiu com “drivers license” e “good 4 u”. BTS, Doja Cat, Lil Nas X e Anitta estavam no topo. Funk e piseiro dominavam no Brasil com nomes como João Gomes e Barões da Pisadinha.<br><br>
+
+      <strong>🧸 Cultura geral:</strong> 2021 foi um ano de esperança após um período pesado. Você viu a vida voltando aos poucos, a empolgação com a vacina, as tendências nostálgicas ressurgindo, e talvez tenha sentido que o mundo ganhou um novo tom — e por isso esse ano ficou marcado em você.</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2021):</strong><br>
+      Um ano ainda dentro da pandemia, mas cheio de mudanças. As vacinas começaram a ser aplicadas, as aulas foram voltando, as ruas ganharam vida — e a cultura digital foi o grande centro das atenções.<br><br>
+      <strong>📱 TikTok:</strong> O verdadeiro centro de tudo. Desafios, vídeos engraçados, dublagens, trends com cortes rápidos, e a música "Meu Nome é Tássio" viralizando no Brasil.<br>
+      <strong>🎮 Jogos:</strong> “Roblox” explodiu, principalmente com o público mais jovem. “Genshin Impact” e “Friday Night Funkin’” viraram obsessão em muitas casas. “Among Us” ainda era jogado, mas em queda.<br>
+      <strong>🎵 Música:</strong> Olivia Rodrigo e “Good 4 U”, Lil Nas X com “Montero”, Doja Cat, BTS com “Butter”, e hits brasileiros como “Basta Você Me Ligar” e “Tapão na Raba”.<br>
+      <strong>🎥 Séries e filmes:</strong> “Round 6” virou o assunto do ano, junto com “Loki”, “Wandavision” e “Cruella”.<br>
+      <strong>🎙️ YouTube e Influencers:</strong> Vídeos de rotina, estética, estudos e “minha vida na pandemia” ganharam destaque. Os vlogs de volta às aulas foram emocionantes.<br><br>
+      2021 foi um ano de renascimento — e talvez isso tenha tornado ele o seu favorito.</p>
+    `;
+  }
+}
+if (anoFavorito === '2022') {
+  const idadeEm2022 = 2022 - ano;
+
+  if (idadeEm2022 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2022):</strong><br>
+      Você tinha apenas ${idadeEm2022} ano${idadeEm2022 === 1 ? '' : 's'} em 2022. Talvez tenha algumas memórias vagas ou tenha ouvido muito sobre esse ano, mas dificilmente viveu experiências que marquem ele como seu favorito.</p>
+    `;
+  } else if (idadeEm2022 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2022):</strong><br>
+      Você estava começando a explorar o mundo e se encantava com as novidades ao seu redor.<br><br>
+      
+      <strong>📺 Desenhos e séries:</strong> A série "Wandinha" (Netflix) chamou atenção com seu humor sombrio e carisma e Round 6 ainda estava no Auge.<br>
+      <strong>🎵 Músicas:</strong> "Tá assim por que tá boladona", "Indo Viagem de Avião", “Snapping One Two, Where Are You” (“Snap”), e “Only Love Can Hurt Like This” foram hits que todo mundo ouviu, principalmente na época da morte da Rainha Elizabeth II.<br>
+      <strong>🔥 Memes:</strong> Os memes “Bora Bill” e “Lá Ele” dominaram as redes sociais.<br>
+      <strong>🧸 Brinquedos:</strong> LOL Surprise continuava fazendo sucesso entre as crianças.<br>
+      <strong>🌍 Clima social:</strong> O mundo ainda sentia o clima do pós-pandemia, com muita expectativa e reencontros.<br>
+      Foi um ano gostoso para crescer, descobrir e se divertir!</p>
+    `;
+  } else if (idadeEm2022 >= 15) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2022):</strong><br>
+      Você tinha ${idadeEm2022} anos em 2022 — ou seja, viveu quase toda a década de 2010, mas escolheu este ano como seu favorito, o que é bem especial.<br><br>
+
+      <strong>👑 Evento marcante:</strong> A morte da Rainha Elizabeth II chocou o mundo e marcou o fim de uma era.<br>
+      <strong>🎶 Música:</strong> "Indo Viagem de Avião", "Tá assim por que tá boladona", “Snapping One Two, Where Are You” viralizou fortemente, junto com “Only Love Can Hurt Like This”.<br>
+      <strong>🔥 Memes:</strong> “Bora Bill” e “Lá Ele” foram hits nas redes sociais.<br>
+      <strong>⚖️ Política:</strong> O Brasil viveu uma divisão intensa entre Lula e Bolsonaro, com debates acalorados.<br>
+      <strong>⚽ Copa do Mundo:</strong> Como sempre, a Copa parou o país — mas o trauma da vitória da Argentina ficou bem marcado.<br>
+      <strong>📺 Cultura pop:</strong> A série “Wandinha” conquistou fãs com seu tom sombrio e estilo único.<br>
+      <strong>🌍 Social:</strong> O sentimento de pós-pandemia trouxe esperança e reencontros.<br>
+      <strong>📱 Redes sociais:</strong> TikTok, YouTube e Instagram seguiram dominando, com muita criação e tendências.<br><br>
+
+      Foi um ano cheio de acontecimentos fortes, cultura pulsante e emoções intensas — totalmente compreensível que você o ame tanto!</p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2022):</strong><br>
+      Você tinha entre 7 e 14 anos em 2022 — aquela fase em que a cultura pop, memes e música começam a fazer muito sentido.<br><br>
+
+      <strong>🎶 Música:</strong> Hits como "Tá assim por que tá boladona", "Indo Viagem de Avião", “Snapping One Two, Where Are You” e “Only Love Can Hurt Like This” tocavam em todo lugar.<br>
+      <strong>🔥 Memes:</strong> “Bora Bill” e “Lá Ele” eram fenômenos online.<br>
+      <strong>⚖️ Política:</strong> O país ficou dividido entre Lula e Bolsonaro, com muita discussão acalorada.<br>
+      <strong>⚽ Copa do Mundo:</strong> O evento parou o Brasil, e o título da Argentina foi um choque para muitos.<br>
+      <strong>📺 Cultura pop:</strong> A série “Wandinha” da Netflix foi sensação, com fãs apaixonados.<br>
+      <strong>🌍 Social:</strong> A vida social começava a voltar com força após a pandemia.<br>
+      <strong>📱 Redes sociais:</strong> TikTok e outras plataformas continuavam cheias de novidades e trends.<br><br>
+
+      Foi um ano intenso, cheio de momentos que marcaram uma geração — e explicam seu amor por 2022.</p>
+    `;
+  }
+}
+
+if (anoFavorito === '2023') {
+  const idadeEm2023 = 2023 - ano;
+
+  if (idadeEm2023 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2023):</strong><br>
+      Você tinha apenas ${idadeEm2023} ano${idadeEm2023 === 1 ? '' : 's'} em 2023, então é pouco provável que tenha memórias marcantes desse ano.</p>
+    `;
+  } else if (idadeEm2023 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2023):</strong><br>
+      Você estava descobrindo o mundo e se encantando com músicas, cores e brincadeiras.<br><br>
+
+      <strong>📺 Desenhos e séries:</strong> Muitos desenhos e programas divertidos fizeram parte da sua rotina.<br>
+      <strong>🎵 Músicas:</strong> A música “Eu queria ser uma abelha pra pousar na sua flor” fez sucesso, assim como “Eu vou tomar um tacacá”, que animavam festas e encontros.<br>
+      <strong>🧸 Brinquedos e jogos:</strong> Brinquedos interativos e jogos educativos garantiam muita diversão.<br>
+      <strong>📱 Redes sociais:</strong> Conteúdos infantis no YouTube e TikTok eram assistidos com supervisão.<br><br>
+
+      Um ano de descobertas e muita alegria para você!
+      </p>
+    `;
+  } else if (idadeEm2023 <= 16) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2023):</strong><br>
+      Com ${idadeEm2023} anos, você vivia muitas experiências legais entre amigos, escola e tecnologia.<br><br>
+
+      <strong>🎵 Música e memes:</strong> “Eu queria ser uma abelha pra pousar na sua flor” foi um hit, e “Eu vou tomar um tacacá” também bombou em festas e redes sociais.<br>
+      <strong>🎬 Filmes e séries:</strong> A estreia do live-action da “Pequena Sereia” marcou o ano e agitou o público.<br>
+      <strong>🎮 Jogos:</strong> Minecraft, Roblox e outros jogos continuaram dominando o tempo livre.<br>
+      <strong>📱 Redes sociais:</strong> TikTok, YouTube e Instagram eram palcos de desafios, memes e tendências.<br><br>
+
+      Foi um ano cheio de conexões, diversão e momentos inesquecíveis para você!
+      </p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2023):</strong><br>
+      Com ${idadeEm2023} anos, você viveu um ano de muita novidade, música e cultura pop.<br><br>
+
+      <strong>🎵 Música e memes:</strong> Hits como “Eu queria ser uma abelha pra pousar na sua flor” e “Eu vou tomar um tacacá” dominaram as festas, TikTok e redes sociais.<br>
+      <strong>🎬 Filmes:</strong> O live-action da “Pequena Sereia” foi um dos grandes lançamentos, trazendo nostalgia e inovação.<br>
+      <strong>📺 Séries e desenhos:</strong> Novas temporadas e produções conquistaram o público jovem.<br>
+      <strong>🎮 Jogos:</strong> Jogos imersivos, eSports e novidades tecnológicas marcaram o ano.<br>
+      <strong>📱 Redes sociais e tendências:</strong> TikTok, Instagram e YouTube continuaram como palcos principais de memes, desafios e tendências.<br>
+      <strong>🌍 Social:</strong> O mundo seguia se ajustando ao pós-pandemia, com mais eventos e encontros presenciais.<br><br>
+
+      Foi um ano de muita cultura pop, diversão e conexões — perfeito para seu favorito!
+      </p>
+    `;
+  }
+}
+
+if (anoFavorito === '2024') {
+  const idadeEm2024 = 2024 - ano;
+
+  if (idadeEm2024 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2024):</strong><br>
+      Você tinha apenas ${idadeEm2024} ano${idadeEm2024 === 1 ? '' : 's'} em 2024. Suas primeiras memórias estão começando a se formar, mas o ano ainda é cheio de mistérios para você.</p>
+    `;
+  } else if (idadeEm2024 <= 17) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2024):</strong><br>
+      Você estava descobrindo o mundo com olhos curiosos, cheio de brincadeiras e novas experiências.<br><br>
+
+      <strong>📺 Desenhos e séries:</strong> Animações coloridas e cheias de humor alegravam o seu dia.<br>
+      <strong>🤖 Tecnologia e IA:</strong> A inteligência artificial já começava a aparecer em brinquedos e apps, tornando tudo mais divertido e interativo.<br>
+      <strong>🎬 Filmes:</strong> “Divertida Mente 2” e “Moana 2” foram lançamentos aguardados e fizeram sucesso.<br>
+      <strong>🧸 Brinquedos e jogos:</strong> Brinquedos tecnológicos e educativos conquistavam as crianças.<br><br>
+
+      Um ano cheio de descobertas, diversão e muita inovação tecnológica para você!
+      </p>
+    `;
+  } else if (idadeEm2024 <= 14) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2024):</strong><br>
+      Você tinha entre ${idadeEm2024} anos e viveu um ano cheio de inovação, tecnologia e cultura.<br><br>
+
+      <strong>🤖 Revolução da Inteligência Artificial:</strong> 2024 foi o ano da explosão da IA, com apps, redes sociais e jogos com recursos avançados que mudaram sua rotina.<br>
+      <strong>🎬 Filmes:</strong> Além de “Divertida Mente 2”, “Moana 2” encantou o público.<br>
+      <strong>🎮 Jogos:</strong> Jogos com tecnologia imersiva ganharam popularidade.<br>
+      <strong>📱 Redes sociais:</strong> Trends e filtros com IA viralizaram no TikTok, Instagram e YouTube.<br><br>
+
+      Foi um ano de muito aprendizado, inovação e diversão para você!
+      </p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2024):</strong><br>
+      Com ${idadeEm2024} anos, você vivenciou um ano marcante em termos tecnológicos e culturais.<br><br>
+
+      <strong>🤖 Revolução da Inteligência Artificial:</strong> 2024 consolidou a popularização da IA, transformando a forma como trabalhamos, estudamos e nos divertimos.<br>
+      <strong>🎬 Cinema:</strong> Lançamentos como “Divertida Mente 2” e “Moana 2” foram destaques.<br>
+      <strong>🎮 Jogos:</strong> Novidades tecnológicas e experiências imersivas dominaram o mercado.<br>
+      <strong>📱 Redes sociais:</strong> Ferramentas baseadas em IA criaram novas tendências e formas de interação.<br>
+      <strong>🌍 Debates globais:</strong> Discussões sobre ética tecnológica e impactos sociais foram intensas.<br><br>
+
+      Foi um ano de transição e inovação — você esteve no centro dessa revolução!
+      </p>
+    `;
+  }
+}
+if (anoFavorito === '2025') {
+  const idadeEm2025 = 2025 - ano;
+
+  if (idadeEm2025 <= 2) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2025):</strong><br>
+      Você tinha apenas ${idadeEm2025} ano${idadeEm2025 === 1 ? '' : 's'} em 2025 — ou seja, mal está começando a criar memórias, e já decidiu que este é seu ano favorito em menos de 6 meses? Parabéns, criancinha! Parece que você já sabe ler e escrever muito bem para tão cedo!<br>
+      Brincadeiras à parte, é difícil que alguém tão novinho tenha vivido algo suficiente para escolher o melhor ano da vida — mas adoramos o entusiasmo!</p>
+       `;
+  } else if (idadeEm2025 <= 6) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2025):</strong><br>
+      Você está descobrindo o mundo com muita curiosidade e alegria.<br><br>
+
+      <strong>📺 Desenhos e séries:</strong> Novas animações coloridas e divertidas fazem sucesso, ajudando na sua imaginação e diversão.<br>
+      <strong>🎵 Músicas:</strong> “Penelope, Charmosa” é uma febre universal, com a paródia “Penelope, Pandora” arrancando risadas.<br>
+      <strong>🧸 Brinquedos e jogos:</strong> Brinquedos interativos e jogos infantis fazem parte da sua rotina.<br><br>
+
+      Um ano de descobertas, alegria e muita diversão para você!
+      </p>
+    `;
+  } else if (idadeEm2025 <= 14) {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2025):</strong><br>
+      Com ${idadeEm2025} anos, você está vivendo uma fase cheia de mudanças e novidades.<br><br>
+
+      <strong>🌍 Social e tecnologia:</strong> A inteligência artificial já faz parte da metodologia de alguns professores, mudando a forma de aprender.<br>
+      <strong>📱 Redes sociais e polêmicas:</strong> A nova lei que proíbe o uso de celular no fundamental II e ensino médio causou revolta e muita discussão entre jovens nas redes.<br>
+      <strong>🎮 Jogos:</strong> Jogos populares bombam, mas a frustração do adiamento do GTA VI para 2026 irritou muita gente.<br>
+      <strong>🎬 Filmes:</strong> O filme do Minecraft chamou atenção, juntando fãs e novas gerações.<br>
+      <strong>🎵 Música:</strong> “Penelope, Charmosa” continua tocando em todo lugar.<br>
+      <strong>🌟 Cultura pop:</strong> O “Mundo do Torajo” ganhou repercussão e várias parcerias como nunca antes.<br>
+      <strong>⚔️ Atualidades:</strong> A guerra parecida com a de 2022 ainda preocupa, e todos ficaram apreensivos com a possível volta da pandemia.<br><br>
+
+      2025 é um ano de adaptação, energia jovem e muita cultura pop, um ano que você certamente nunca vai esquecer!
+      </p>
+    `;
+  } else {
+    textoAnoFavorito = `
+      <p><strong>Sobre seu ano favorito (2025):</strong><br>
+      Com ${idadeEm2025} anos, você está vivendo um momento único, de transição entre gerações e tecnologia.<br><br>
+
+      <strong>🌍 Contexto global:</strong> A preocupação com a guerra similar à de 2022 e o temor inicial da volta da pandemia marcaram o ano.<br>
+      <strong>🤖 Tecnologia e educação:</strong> A inteligência artificial está cada vez mais integrada à educação, com professores incorporando IA nas metodologias.<br>
+      <strong>📱 Sociedade e debates:</strong> A nova lei que proíbe celulares no ensino fundamental II e médio causou forte reação entre os jovens, com debates acalorados nas redes.<br>
+      <strong>🎮 Jogos:</strong> Jogos populares continuam dominando, mas o adiamento do GTA VI para 2026 foi um grande descontentamento entre fãs.<br>
+      <strong>🎬 Filmes:</strong> O lançamento do filme do Minecraft trouxe nostalgia e inovação.<br>
+      <strong>🎵 Música e cultura pop:</strong> “Penelope, Charmosa” dominou as paradas, com a paródia “Penelope, Pandora” fazendo sucesso.<br>
+      <strong>🌟 Cultura:</strong> “Mundo do Torajo” cresceu muito, com parcerias inéditas, marcando presença na cultura jovem.<br>
+      <strong>🆕 Gerações:</strong> A nova geração beta começou a se destacar, trazendo novas ideias e energia.<br><br>
+
+      2025 é um ano intenso, cheio de tecnologia, debates e cultura, que está moldando o futuro que você viverá.
+      </p>
+    `;
+  }
+}
+if (parseInt(anoFavorito) <= 2013) {
+  textoAnoFavorito = `
+    <p><strong>Sobre seu ano favorito (${anoFavorito}):</strong><br>
+    Infelizmente, o site ainda não disponibilizou informações sobre o ano ${anoFavorito}.</p>
+  `;
+}
+
+
 
       let escolaridade = '';
       if (tempoNaEscola < 0) {
@@ -182,7 +768,7 @@
       } else if (tempoNaEscola < 12) {
         escolaridade = `Você está aproximadamente na ${tempoNaEscola - 8}ª série do Ensino Médio.`;
       } else {
-        escolaridade = 'Você provavelmente já terminou a escola... ou pulou a cerca 📚✌️';
+        escolaridade = 'Você provavelmente já terminou a escola... ou pelo menos deveria...';
       }
 
       const faixa = faixas.find(f => f.anos.includes(ano));
@@ -190,14 +776,16 @@
       if (repeticoes >= 4) textoFaixa += '<p><strong>Não brinca?</strong></p>';
 
       resultado.classList.remove('show');
-      resultado.innerHTML = `
-        <p><strong>Idade:</strong> ${idade} anos</p>
-        <p><strong>Geração:</strong> ${geracao}</p>
-        <p><strong>Teve consciência estimada a partir de:</strong> ${anoConsciencia}</p>
-        <p><strong>Provavelmente entrou na escola em:</strong> ${anoEscola}</p>
-        <p><strong>Situação escolar:</strong> ${escolaridade}</p>
-        ${textoFaixa}
-      `;
+resultado.innerHTML = `
+  <p><strong>Idade:</strong> ${idade} anos</p>
+  <p><strong>Geração:</strong> ${geracao}</p>
+  <p><strong>Consciência estimada a partir des:</strong> ${anoConsciencia}</p>
+  <p><strong>Provavelmente entrou na escola em:</strong> ${anoEscola}</p>
+  <p><strong>Situação escolar:</strong> ${escolaridade}</p>
+  ${textoFaixa}
+  ${textoAnoFavorito}
+`;
+
       setTimeout(() => resultado.classList.add('show'), 50);
     }
   </script>
